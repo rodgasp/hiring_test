@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import backgroundGif from "../assets/images/play.gif";
@@ -24,7 +24,7 @@ const modalStyles = {
     borderRadius: "20px",
     padding: "40px",
     maxWidth: "600px",
-    height: "300px",
+    height: "430px",
     width: "90%",
     color: "#fff",
     textAlign: "center",
@@ -69,12 +69,26 @@ const Play = () => {
   const [PlaymodalIsOpen, setModalPlayIsOpen] = useState(false);
   const [difficulty, setDifficulty] = useState(null);
   const [isCalmMode, setIsCalmMode] = useState(false);
-  
+
+  useEffect(() => {
+    const calmMode = localStorage.getItem("calmMode") === "true";
+    setIsCalmMode(calmMode);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userID");
+    navigate("/");
+  };
+
   const [bgVolume, setBgVolume] = useState(
-    localStorage.getItem("bgVolume") !== null ? parseInt(localStorage.getItem("bgVolume"), 10) : 50
+    localStorage.getItem("bgVolume") !== null
+      ? parseInt(localStorage.getItem("bgVolume"), 10)
+      : 50
   );
   const [sfxVolume, setSfxVolume] = useState(
-    localStorage.getItem("sfxVolume") !== null ? parseInt(localStorage.getItem("sfxVolume"), 10) : 50
+    localStorage.getItem("sfxVolume") !== null
+      ? parseInt(localStorage.getItem("sfxVolume"), 10)
+      : 50
   );
 
   const [mutedBg, setMutedBg] = useState(false);
@@ -132,22 +146,27 @@ const Play = () => {
   };
 
   const toggleCalmMode = () => {
-    setIsCalmMode((prev) => !prev);
+    setIsCalmMode((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('calmMode', newValue);
+      return newValue;
+    });
+    
     playClickSound();
   };
 
   const playHoverSound = () => {
     hoverAudioRef.current.currentTime = 0;
-    hoverAudioRef.current.play().catch((error) =>
-      console.error("Hover sound playback failed:", error)
-    );
+    hoverAudioRef.current
+      .play()
+      .catch((error) => console.error("Hover sound playback failed:", error));
   };
 
   const playClickSound = () => {
     clickAudioRef.current.currentTime = 0;
-    clickAudioRef.current.play().catch((error) =>
-      console.error("Click sound playback failed:", error)
-    );
+    clickAudioRef.current
+      .play()
+      .catch((error) => console.error("Click sound playback failed:", error));
   };
 
   const SettingopenModal = () => {
@@ -171,10 +190,13 @@ const Play = () => {
   };
 
   const handleDifficultySelect = (level) => {
+    console.log("Difficulty selected:", level);
     setDifficulty(level);
+    PlaycloseModal();
   };
 
   const handlePlay = () => {
+    console.log("Play button clicked");
     playClickSound();
     const userID = localStorage.getItem("userID");
     if (!userID) {
@@ -185,23 +207,25 @@ const Play = () => {
 
     if (isCalmMode) {
       if (difficulty === "red") {
-        navigate("/calm-hard");
+        navigate("/hard/calm");
       } else if (difficulty === "yellow") {
-        navigate("/calm-medium");
+        navigate("/medium/calm");
       } else if (difficulty === "green") {
-        navigate("/calm-easy");
+        navigate("/easy/calm");
       } else {
-        alert(`Selected difficulty: ${difficulty}`);
+        console.log("Default difficulty: Normal");
+        navigate("/medium/calm");
       }
     } else {
       if (difficulty === "red") {
-        navigate("/memory-card-game");
+        navigate("/hard");
       } else if (difficulty === "yellow") {
         navigate("/medium");
       } else if (difficulty === "green") {
         navigate("/easy");
       } else {
-        alert(`Selected difficulty: ${difficulty}`);
+        console.log("Default difficulty: Normal");
+        navigate("/medium");
       }
     }
   };
@@ -216,14 +240,34 @@ const Play = () => {
       <h1 className={`game-title ${isCalmMode ? "calm-title" : ""}`}>
         WonderCards
       </h1>
+      <h5 style={{ color: "white", fontFamily: "'Press Start 2P', cursive" }}>
+        Wallet: {localStorage.getItem("userID")}
+      </h5>
 
       <div className="button-container">
+        <button
+          className={`game-button ${isCalmMode ? "calm-button" : ""}`}
+          onClick={handlePlay}
+          onMouseEnter={playHoverSound}
+        >
+          Play
+        </button>
         <button
           className={`game-button ${isCalmMode ? "calm-button" : ""}`}
           onClick={PlayopenModal}
           onMouseEnter={playHoverSound}
         >
-          Play
+          Select Difficulty
+        </button>
+        <button
+          className={`game-button ${isCalmMode ? "calm-button" : ""}`}
+          onClick={() => {
+            playClickSound();
+            navigate("/history");
+          }}
+          onMouseEnter={playHoverSound}
+        >
+          My History
         </button>
         <button
           className={`game-button ${isCalmMode ? "calm-button" : ""}`}
@@ -241,6 +285,13 @@ const Play = () => {
           onMouseEnter={playHoverSound}
         >
           Settings
+        </button>
+        <button
+          className={`game-button ${isCalmMode ? "calm-button" : ""}`}
+          onClick={handleLogout}
+          onMouseEnter={playHoverSound}
+        >
+          Logout
         </button>
       </div>
       <Modal
@@ -300,7 +351,7 @@ const Play = () => {
           />
         </div>
 
-        {/* <div className="calm-mode">
+        <div className="calm-mode">
           <h2 className={`${isCalmMode ? "calm-mode-label" : ""} modal-h2`}>
             Calm Mode
           </h2>
@@ -312,7 +363,7 @@ const Play = () => {
             />
             <span className="slider round"></span>
           </label>
-        </div> */}
+        </div>
       </Modal>
 
       <Modal

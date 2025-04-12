@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './Login/Login';
 import Register from './Login/Register';
 import Play from './MemoryCardGame/Play';
+import History from './MemoryCardGame/History';
 import Easy from './MemoryCardGame/MemoryEasy';
 import Medium from './MemoryCardGame/MemoryMedium';
 import MemoryCardGame from './MemoryCardGame/MemoryCardGame';
@@ -18,11 +19,6 @@ const App = () => {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
-
-  // const handleLogout = () => {
-  //   setIsAuthenticated(false);
-  //   localStorage.removeItem('token');
-  // };
 
   return (
     <Router>
@@ -42,18 +38,34 @@ const App = () => {
         <Route path="/easy" 
        element={isAuthenticated ? <Easy /> : <Navigate to="/login" />}
         />
+        <Route path="/easy/calm" 
+       element={isAuthenticated ? <Easy calm={true} /> : <Navigate to="/login" />}
+        />
         <Route path="/medium" 
          element={isAuthenticated ? <Medium /> : <Navigate to="/login" />}
          />
+         <Route path="/medium/calm" 
+       element={isAuthenticated ? <Medium calm={true} /> : <Navigate to="/login" />}
+        />
         <Route
           path="/play"
-          element={isAuthenticated ? <Play /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Play userID={localStorage.getItem('userID')} /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/history"
+          element={isAuthenticated ? <History userID={localStorage.getItem('userID')} /> : <Navigate to="/login" />}
         />
   
         <Route
-          path="/memory-card-game"
+          path="/hard"
           element={isAuthenticated ? <MemoryCardGame /> : <Navigate to="/login" />}
         />
+
+        <Route
+          path="/memory-card-game/calm"
+          element={isAuthenticated ? <MemoryCardGame  calm={true} /> : <Navigate to="/login" />}
+        />
+
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

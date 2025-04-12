@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Grid, Button, Modal, Typography } from "@mui/material";
 import { styled } from "@mui/system";
@@ -50,7 +50,7 @@ const shuffleArray = (array) => {
 };
 const saveGameData = async (gameData) => {
   try {
-    const response = await axios.post("http://localhost:5000/api/memory/save", gameData, {
+    const response = await axios.post("http://localhost:5005/api/memory/save", gameData, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -61,7 +61,7 @@ const saveGameData = async (gameData) => {
 };
 
 // Styled Components
-const StyledGameContainer = styled(Box)(({ theme, mouseDisabled }) => ({
+const StyledGameContainer = styled(Box)(({ mouseDisabled }) => ({
   minHeight: "100vh",
   width: "100vw",
   display: "flex",
@@ -77,7 +77,7 @@ const StyledGameContainer = styled(Box)(({ theme, mouseDisabled }) => ({
 
 }));
 
-const PixelButton = styled(Box)(({ theme }) => ({
+const PixelButton = styled(Box)(() => ({
   display: "inline-block",
   backgroundColor: "#2c2c54",
   color: "#fff",
@@ -100,7 +100,7 @@ const PixelButton = styled(Box)(({ theme }) => ({
   },
 }));
 
-const PixelBox = styled(Box)(({ theme }) => ({
+const PixelBox = styled(Box)(() => ({
   position: "absolute",
   bottom: "10%",
   left: "1%",
@@ -116,7 +116,7 @@ const PixelBox = styled(Box)(({ theme }) => ({
   marginBottom: "10px",
 }));
 
-const PixelTimerBox = styled(Box)(({ theme }) => ({
+const PixelTimerBox = styled(Box)(() => ({
   position: "absolute",
   bottom: "5%",
   left: "1%",
@@ -194,7 +194,7 @@ const modalStyle = {
   borderRadius: '10px', // Pixel rounded corners
 };
 
-const PixelTypography = styled(Typography)(({ theme }) => ({
+const PixelTypography = styled(Typography)(() => ({
   fontFamily: '"Press Start 2P", cursive', // Pixelated font style
   fontSize: '24px',
   color: '#fff',  // White text to stand out on the background
@@ -206,7 +206,7 @@ const PixelTypography = styled(Typography)(({ theme }) => ({
     -1px 1px 0 #ff4500`,  // Pixelated text shadow
 }));
 
-const PixelButtonModal = styled(Button)(({ theme }) => ({
+const PixelButtonModal = styled(Button)(() => ({
   backgroundColor: "#2c2c54",
   color: "#fff",
   fontFamily: '"Press Start 2P", cursive', // Pixelated font style

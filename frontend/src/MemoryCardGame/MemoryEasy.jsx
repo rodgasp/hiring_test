@@ -40,7 +40,7 @@ const shuffleArray = (array) => {
 };
 const saveGameData = async (gameData) => {
   try {
-    const response = await axios.post("http://localhost:5000/api/memory/save", gameData, {
+    const response = await axios.post("http://localhost:5005/api/memory/save", gameData, {
       headers: { "Content-Type": "application/json" },
     });
 
