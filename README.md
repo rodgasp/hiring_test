@@ -28,7 +28,7 @@ Build a small part of a card memory game based on your assigned role. This is me
    ```
 2. Navigate to the project directory:
    ```bash
-   cd texaslabs
+   cd hiring_test
    ```
 3. Set up the backend:
    ```bash
