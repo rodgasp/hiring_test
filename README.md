@@ -16,9 +16,15 @@ Build a small part of a card memory game based on your assigned role. This is me
 - Web3: MetaMask integration (only if applicable)
 
 ### 🚀 **Setup Guide:**
+
+0. Use Node 22.14.0
+   ```bash
+   nvm use 22.14.0
+   ```
+
 1. Clone the repository:
    ```bash
-   git clone https://github.com/texaslabs/Test.git
+   git clone https://github.com/rodgasp/hiring_test.git
    ```
 2. Navigate to the project directory:
    ```bash
